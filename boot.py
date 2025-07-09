@@ -7,6 +7,8 @@
 # normal RTC time creep is handled in the main program
 # Add try / except function to code to handle no internet connection
 
+# Version 20250709 @ 16:05
+
 from machine import Pin, SoftI2C
 import time
 from time import sleep
@@ -14,6 +16,8 @@ import sys
 import network
 import ntptime
 from ds3231_gen import *
+from web1 import *
+import _thread
 
 utcoffset = 10
 ntptime.host = "pool.ntp.org"
@@ -24,10 +28,20 @@ try:
     N1.active(True)
     N1.disconnect()
 
+    f = open('config/wifi_config.txt', 'r') 
+    SSID = f.readline()
+    SSID = SSID.strip() # Remove unwanted leading and lagging charaters
+    print('SSID - ' + SSID)
+    PASSWORD = f.readline()
+    PASSWORD = PASSWORD.strip() # Remove unwanted leading and lagging charaters
+    print('PASSWORD - ' + PASSWORD)
+    f.close()
+    
     #N1.connect("Moto G 5 Plus 9895","Marvin3150")
-    N1.connect("Grove-WiFi","f33dmenow3150")
+    N1.connect(SSID, PASSWORD)#
+    #N1.connect("Grove-WiFi","f33dmenow3150")
     #N1.connect("TheGrove24","f33dmenow3150")
-    #print(" WiFi Connected -",N1.ifconfig())
+    print(" WiFi Connected -",N1.ifconfig())
     sleep(2)
     if N1.isconnected():
         #(ip,gateway,netmask,MAC,ssid)= N1.ifconfig()
@@ -37,9 +51,9 @@ try:
         
 except KeyboardInterrupt:
         print ('Interrupted')
-        print(mail1.value())
         #sys.exit(0) 
 
+_thread.start_new_thread(web_page, ())
 #RTC Pins and setup
 sda_pin=Pin(12)
 scl_pin=Pin(11)
