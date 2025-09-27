@@ -37,8 +37,8 @@ try:
     print('PASSWORD - ' + PASSWORD)
     f.close()
     
-    #N1.connect("Moto G 5 Plus 9895","Marvin3150")
-    N1.connect(SSID, PASSWORD)#
+    N1.connect("Moto G 5 Plus 9895","Marvin3150")
+    #N1.connect(SSID, PASSWORD)#
     #N1.connect("Grove-WiFi","f33dmenow3150")
     #N1.connect("TheGrove24","f33dmenow3150")
     print(" WiFi Connected -",N1.ifconfig())
